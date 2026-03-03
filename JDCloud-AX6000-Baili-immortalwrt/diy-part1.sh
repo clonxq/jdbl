@@ -35,8 +35,6 @@ function extract_pkg() {
     fi
 }
 
-git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
-git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall-luci
 git clone https://github.com/nikkinikki-org/OpenWrt-nikki.git package/OpenWrt-nikki
 git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
