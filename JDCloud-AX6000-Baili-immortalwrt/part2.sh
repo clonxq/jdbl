@@ -26,6 +26,3 @@ rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
-# 修复 mbedtls 在 GCC 14 下的 target specific option mismatch 错误
-find ./package/libs/mbedtls -name Makefile -exec sed -i 's/-Werror//g' {} +
-find ./feeds/base/package/libs/mbedtls -name Makefile -exec sed -i 's/-Werror//g' {} +
