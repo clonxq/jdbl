@@ -14,6 +14,7 @@ sed -i 's/192\.168\.[0-9]*\.1/192.168.5.1/g' package/base-files/files/bin/config
 ##-----------------Del duplicate packages------------------
 rm -rf feeds/packages/net/open-app-filter
 rm -rf package/feeds/luci/luci-app-wrtbwmon
+rm -rf package/feeds/luci/luci-app-wechatpush
 rm -rf package/feeds/packages/wrtbwmon
 rm -rf ./feeds/packages/net/adguardhome
 rm -rf ./feeds/packages/net/mosdns
