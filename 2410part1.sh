@@ -39,9 +39,9 @@ function extract_pkg() {
 
 # --- 插件拉取列表 (全部存放至 package/diy) ---
 mkdir -p package/diy
-
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall-luci
+git clone https://github.com/tty228/luci-app-wechatpush.git package/diy/luci-app-wechatpush
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/diy/passwall-packages
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/diy/passwall-luci
 # git clone https://github.com/sirpdboy/luci-app-lucky.git package/diy/lucky
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
