@@ -50,7 +50,7 @@ git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/diy/ddns-go
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
 # git clone https://github.com/linkease/istore.git package/diy/istore
 # git clone https://github.com/KFERMercer/luci-app-tcpdump.git package/diy/luci-app-tcpdump
-# git clone https://github.com/tty228/luci-app-wechatpush.git package/diy/luci-app-wechatpush
+git clone https://github.com/tty228/luci-app-wechatpush.git package/diy/luci-app-wechatpush
 
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
