@@ -130,8 +130,7 @@ jobs:
       with:
         path: |
           openwrt/.ccache
-          openwrt/staging_dir/host
-          openwrt/staging_dir/hostpkg
+          openwrt/staging_dir/host*
           openwrt/staging_dir/toolchain-*
         key: ${{ runner.os }}-openwrt-${{ env.SAFE_BRANCH }}-${{ hashFiles('openwrt/.config') }}
         restore-keys: |
