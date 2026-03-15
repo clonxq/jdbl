@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: 0 12 */6 * *
+    - cron: 0 12 * * 5
 
 env:
   ###############手动修改##############
