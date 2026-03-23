@@ -277,7 +277,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
         retain_days: 1
-        keep_minimum_runs: 1
+        keep_minimum_runs: 2
         # 显式指定只清理当前这个工作流，防止误伤
         delete_workflow_pattern: "${{ github.workflow }}"
 
@@ -285,7 +285,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@master
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 1
+        keep_latest: 2
         delete_tags: true
         delete_tag_pattern: "2410-.*"
       env:
