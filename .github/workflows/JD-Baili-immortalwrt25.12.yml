@@ -35,13 +35,11 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
+permissions: write-all
+
 jobs:
   build:
     runs-on: ubuntu-24.04
-    
-    permissions:
-      actions: write
-      contents: write
       
     steps:
     - name: Check Server Performance
