@@ -21,6 +21,8 @@ on:
 #  schedule:
 #    - cron: 0 12 2,15 * *
 
+permissions: write-all
+
 env:
   ###############手动修改##############
   OPENWRT_NAME: immortalwrt
@@ -35,8 +37,6 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   
-permissions: write-all
-
 jobs:
   build:
     runs-on: ubuntu-24.04
