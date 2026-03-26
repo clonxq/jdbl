@@ -48,9 +48,5 @@ git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 git clone https://github.com/sirpdboy/luci-app-adguardhome package/luci-app-adguardhome
 extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
 extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
-git clone --depth=1 https://github.com/padavanonly/immortalwrt-mt798x-6.6 temp_repo
-cp -rn temp_repo/package/mtk/applications/wrtbwmon package/
-cp -rn temp_repo/package/mtk/applications/luci-app-wrtbwmon package/
-rm -rf feeds/luci/applications/luci-app-wrtbwmon
-rm -rf feeds/packages/net/wrtbwmon
-rm -rf temp_repo
+extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "package/luci-app-bandix"
+extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/openwrt-bandix"
