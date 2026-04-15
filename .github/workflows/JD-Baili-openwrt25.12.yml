@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 ###############手动修改##############
-name: JD-Baili-openwrt24.10
+name: JD-Baili-openwrt25.12
 
 on:
   repository_dispatch:
