@@ -44,7 +44,6 @@ mkdir -p package/diy
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/diy/passwall-packages
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/diy/passwall-luci
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/diy/passwall2
 # git clone https://github.com/gdy666/luci-app-lucky.git package/diy/lucky
 git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/diy/ddns-go
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
