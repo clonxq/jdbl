@@ -42,28 +42,28 @@ mkdir -p package/diy
 
 # Add a feed source
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/diy/passwall-packages
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/diy/passwall-luci
-# git clone https://github.com/gdy666/luci-app-lucky.git package/diy/lucky
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/diy/ddns-go
-git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
-# git clone https://github.com/linkease/istore.git package/diy/istore
-# git clone https://github.com/KFERMercer/luci-app-tcpdump.git package/diy/luci-app-tcpdump
-git clone https://github.com/tty228/luci-app-wechatpush.git package/diy/luci-app-wechatpush
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
+# git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
+git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
+git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
+# git clone https://github.com/linkease/istore.git package/istore
+# git clone https://github.com/KFERMercer/luci-app-tcpdump.git package/luci-app-tcpdump
+git clone https://github.com/tty228/luci-app-wechatpush.git package/luci-app-wechatpush
 
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/diy/mosdns
-git clone https://github.com/sbwml/v2ray-geodata package/diy/v2ray-geodata
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 git clone --depth=1 -b 2410 https://github.com/padavanonly/immortalwrt-mt798x-6.6 temp_repo
 mkdir -p package/diy
-cp -rn temp_repo/package/mtk/applications/wrtbwmon package/diy/
-cp -rn temp_repo/package/mtk/applications/luci-app-wrtbwmon package/diy/
+cp -rn temp_repo/package/mtk/applications/wrtbwmon package/
+cp -rn temp_repo/package/mtk/applications/luci-app-wrtbwmon package/
 rm -rf feeds/luci/applications/luci-app-wrtbwmon
 rm -rf feeds/packages/net/wrtbwmon
 rm -rf temp_repo
 
-extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/diy/luci-app-openclash"
-extract_pkg "https://github.com/kenzok8/openwrt-packages" "luci-app-adguardhome" "package/diy/luci-app-adguardhome"
-extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/diy/adguardhome"
+extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
+extract_pkg "https://github.com/kenzok8/openwrt-packages" "luci-app-adguardhome" "package/luci-app-adguardhome"
+extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
