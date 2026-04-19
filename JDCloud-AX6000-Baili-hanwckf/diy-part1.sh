@@ -53,7 +53,7 @@ git clone https://github.com/tty228/luci-app-wechatpush.git package/luci-app-wec
 
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/luci-app-mosdns -b openwrt-21.02 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 git clone --depth=1 -b 2410 https://github.com/padavanonly/immortalwrt-mt798x-6.6 temp_repo
