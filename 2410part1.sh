@@ -39,17 +39,17 @@ function extract_pkg() {
 
 # --- 插件拉取列表 (全部存放至 package/diy) ---
 mkdir -p package/diy
-git clone https://github.com/tty228/luci-app-wechatpush.git package/diy/luci-app-wechatpush
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/diy/passwall-packages
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/diy/passwall-luci
-# git clone https://github.com/sirpdboy/luci-app-lucky.git package/diy/lucky
-git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
+git clone https://github.com/tty228/luci-app-wechatpush.git package/luci-app-wechatpush
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall-luci
+# git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
+git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/diy/mosdns
-git clone https://github.com/sbwml/v2ray-geodata package/diy/v2ray-geodata
-git clone https://github.com/sirpdboy/luci-app-adguardhome package/diy/luci-app-adguardhome
-extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/diy/adguardhome"
-extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/diy/luci-app-openclash"
-extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "package/diy/luci-app-bandix"
-extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/diy/openwrt-bandix"
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+git clone https://github.com/sirpdboy/luci-app-adguardhome package/luci-app-adguardhome
+extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
+extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
+extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "package/luci-app-bandix"
+extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/openwrt-bandix"
