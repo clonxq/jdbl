@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'
 #  schedule:
-#    - cron: 50 15 * * 5
+#    - cron: 50 18 * * 5
 
 permissions: write-all
 
