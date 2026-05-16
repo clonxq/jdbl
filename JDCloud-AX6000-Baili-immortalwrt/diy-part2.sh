@@ -31,3 +31,9 @@ git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/l
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 #sed -i 's/mt7981b.dtsi/mt7981.dtsi/g' target/linux/mediatek/dts/*.dts*
+
+# 强制关闭 passwall-packages 库中 haproxy 的 QUIC 支持，解决 ssl_encryption_level_t 报错
+sed -i 's/USE_QUIC:=1/USE_QUIC:=0/g' package/passwall-packages/haproxy/Makefile
+
+# (备用保险) 以防它是在 MAKE_FLAGS 里定义的，同时替换掉可能存在的 USE_QUIC=1
+sed -i 's/USE_QUIC=1/USE_QUIC=0/g' package/passwall-packages/haproxy/Makefile
