@@ -75,3 +75,5 @@ extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "pack
 extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/openwrt-bandix"
 extract_pkg "https://github.com/immortalwrt/luci" "applications/luci-app-msd_lite" "package/luci-app-msd_lite" "openwrt-25.12"
 extract_pkg "https://github.com/immortalwrt/packages" "net/msd_lite" "package/msd_lite" "openwrt-25.12"
+#extract_pkg "https://github.com/kenzok8/small-package" "luci-app-msd_lite" "package/luci-app-msd_lite"
+#extract_pkg "https://github.com/kenzok8/small-package" "msd_lite" "package/msd_lite"
