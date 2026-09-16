@@ -31,8 +31,3 @@ git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/l
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 sed -i 's|../../luci.mk|$(TOPDIR)/feeds/luci/luci.mk|g' package/luci-app-msd_lite/Makefile
-
-# 修复 containerd 兼容 Go 1.22+ 编译报错（通配所有 2.x 版本）
-if [ -d "feeds/packages/utils/containerd" ]; then
-    find feeds/packages/utils/containerd/ -name "go.mod" -exec sed -i -E 's/github\.com\/klauspost\/cpuid\/v2 v[0-9\.]+/github.com\/klauspost\/cpuid\/v2 v2.2.3/g' {} +
-fi
