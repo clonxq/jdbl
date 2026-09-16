@@ -31,7 +31,7 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: op2512.config
   DIY_P1_SH: oppart1.sh
-  DIY_P2_SH: oppart2.sh
+  DIY_P2_SH: op24part2.sh
   SSH_ACTIONS: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
