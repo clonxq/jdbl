@@ -31,3 +31,25 @@ git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/l
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 sed -i 's|../../luci.mk|$(TOPDIR)/feeds/luci/luci.mk|g' package/luci-app-msd_lite/Makefile
+
+# 4. 回退 PassWall 依赖仓库到 Go 26.x 兼容的版本 (Commit: dbd89ac)
+# ------------------------------------------------------------------
+if [ -d "package/passwall-packages" ]; then
+  echo "==> 正在将 package/passwall-packages 回退至 Sep 8, 2026 (dbd89ac)..."
+  cd package/passwall-packages
+  git fetch --unshallow 2>/dev/null || git fetch --depth=100 2>/dev/null
+  git checkout dbd89ac
+  echo "==> passwall-packages 当前版本:"
+  git log -1 --oneline
+  cd - >/dev/null
+fi
+
+if [ -d "package/passwall-luci" ]; then
+  echo "==> 正在将 package/passwall-luci 回退至 Sep 8, 2026 (dbd89ac)..."
+  cd package/passwall-luci
+  git fetch --unshallow 2>/dev/null || git fetch --depth=100 2>/dev/null
+  git checkout dbd89ac
+  echo "==> passwall-luci 当前版本:"
+  git log -1 --oneline
+  cd - >/dev/null
+fi
