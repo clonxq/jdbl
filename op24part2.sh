@@ -33,10 +33,24 @@ sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 sed -i 's|../../luci.mk|$(TOPDIR)/feeds/luci/luci.mk|g' package/luci-app-msd_lite/Makefile
 
 # ------------------------------------------------------------------
-# 修改 xray-core 的 go.mod，将 Go 版本限制从 1.27 改回 1.26
+# 4. 回退 PassWall 依赖仓库到 Go 26.x 兼容的版本 (Commit: dbd89ac)
 # ------------------------------------------------------------------
-find package/ feeds/ -type f -path "*/xray-core/Makefile" | while read -r makefile; do
-  XRAY_SRC_DIR=$(dirname "$makefile")
-  # 查找并修改该包下的 go.mod 文件（无论是在源码包还是构建目录）
-  find "$XRAY_SRC_DIR" -name "go.mod" -exec sed -i 's/go 1.27/go 1.26/g' {} +
-done
+if [ -d "package/passwall-packages" ]; then
+  echo "==> 正在将 package/passwall-packages 回退至 Sep 8, 2026 (dbd89ac)..."
+  cd package/passwall-packages
+  git fetch --unshallow 2>/dev/null || git fetch --depth=100 2>/dev/null
+  git checkout dbd89ac
+  echo "==> passwall-packages 当前版本:"
+  git log -1 --oneline
+  cd - >/dev/null
+fi
+
+if [ -d "package/passwall-luci" ]; then
+  echo "==> 正在将 package/passwall-luci 回退至 Sep 8, 2026 (dbd89ac)..."
+  cd package/passwall-luci
+  git fetch --unshallow 2>/dev/null || git fetch --depth=100 2>/dev/null
+  git checkout dbd89ac
+  echo "==> passwall-luci 当前版本:"
+  git log -1 --oneline
+  cd - >/dev/null
+fi
