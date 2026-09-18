@@ -31,11 +31,6 @@ git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/l
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 
-# ------------------------------------------------------------------
-# 修改 xray-core 的 go.mod，将 Go 版本限制从 1.27 改回 1.26
-# ------------------------------------------------------------------
-find package/ feeds/ -type f -path "*/xray-core/Makefile" | while read -r makefile; do
-  XRAY_SRC_DIR=$(dirname "$makefile")
-  # 查找并修改该包下的 go.mod 文件（无论是在源码包还是构建目录）
-  find "$XRAY_SRC_DIR" -name "go.mod" -exec sed -i 's/go 1.27/go 1.26/g' {} +
-done
+# 2. 如果包目录叫 Xray-core 或在 feeds 目录下，做防漏替换
+find feeds/ package/ -type f -name "go.mod" -path "*/xray-core/*" -exec sed -i 's/go 1.27/go 1.26/g' {} +
+find feeds/ package/ -type f -name "go.mod" -path "*/Xray-core/*" -exec sed -i 's/go 1.27/go 1.26/g' {} +
