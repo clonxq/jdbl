@@ -29,7 +29,7 @@ env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: op2512.config
+  CONFIG_FILE: op2410.config
   DIY_P1_SH: oppart1.sh
   DIY_P2_SH: op24part2.sh
   SSH_ACTIONS: true
