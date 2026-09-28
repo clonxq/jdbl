@@ -30,4 +30,3 @@ rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/lang/golang
 #修复Rust编译失败
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
-sed -i 's|../../luci.mk|$(TOPDIR)/feeds/luci/luci.mk|g' package/luci-app-msd_lite/Makefile
