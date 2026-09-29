@@ -18,8 +18,8 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
-#  schedule:
-#    - cron: 25 18 3,16 * *
+  schedule:
+    - cron: 25 18 3,16 * *
 
 permissions: write-all
 
