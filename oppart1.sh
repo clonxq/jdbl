@@ -58,21 +58,21 @@ function extract_pkg() {
 
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 git clone https://github.com/jerrykuku/luci-app-argon-config.git package/luci-app-argon-config
-git clone https://github.com/eamonxg/luci-theme-aurora.git package/luci-theme-aurora
+#git clone https://github.com/eamonxg/luci-theme-aurora.git package/luci-theme-aurora
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall-luci
 git clone https://github.com/nikkinikki-org/OpenWrt-nikki.git package/OpenWrt-nikki
 git clone https://github.com/tty228/luci-app-wechatpush.git package/luci-app-wechatpush
-git clone  https://github.com/gdy666/luci-app-lucky.git package/lucky
-git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
+#git clone  https://github.com/gdy666/luci-app-lucky.git package/lucky
+#git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 git clone https://github.com/sirpdboy/luci-app-adguardhome package/luci-app-adguardhome
 git clone https://github.com/stackia/rtp2httpd package/rtp2httpd
-git clone https://github.com/eamonxg/luci-theme-aurora.git package/luci-theme-aurora
-git clone https://github.com/VizzleTF/luci-theme-footstrap.git package/luci-theme-footstrap
+#git clone https://github.com/eamonxg/luci-theme-aurora.git package/luci-theme-aurora
+#git clone https://github.com/VizzleTF/luci-theme-footstrap.git package/luci-theme-footstrap
 git clone https://github.com/daeuniverse/openwrt-packages.git package/daeuniverse-packages
 extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
 extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
