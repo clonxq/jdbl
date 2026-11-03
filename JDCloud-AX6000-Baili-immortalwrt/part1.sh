@@ -50,7 +50,7 @@ git clone https://github.com/stackia/rtp2httpd package/rtp2httpd
 #git clone https://github.com/eamonxg/luci-theme-aurora.git package/luci-theme-aurora
 #git clone https://github.com/VizzleTF/luci-theme-footstrap.git package/luci-theme-footstrap
 git clone https://github.com/QiuSimons/luci-app-honk package/honk
-extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
-extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
+#extract_pkg "https://github.com/kenzok8/openwrt-packages" "adguardhome" "package/adguardhome"
+#extract_pkg "https://github.com/vernesong/OpenClash" "luci-app-openclash" "package/luci-app-openclash"
 extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "package/luci-app-bandix"
 extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/openwrt-bandix"
