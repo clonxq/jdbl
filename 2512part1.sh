@@ -1,0 +1,42 @@
+function extract_pkg() {
+    local repo_url=$1
+    local repo_path=$2
+    local local_path=$3
+    local branch=${4:-""}
+    local tmp_dir="tmp_extract_$(date +%s)"
+
+    echo ">>> 正在提取: $repo_path (分支: ${branch:-默认})"
+    local clone_args="--depth 1 --filter=blob:none --sparse"
+    [ -n "$branch" ] && clone_args="$clone_args -b $branch"
+
+    git clone $clone_args "$repo_url" "$tmp_dir"
+    if [ $? -eq 0 ]; then
+        cd "$tmp_dir" || return
+        git sparse-checkout set "$repo_path"
+        cd ..
+        mkdir -p "$(dirname "$local_path")"
+        [ -d "$local_path" ] && rm -rf "$local_path"
+        if [ -d "$tmp_dir/$repo_path" ]; then
+            cp -r "$tmp_dir/$repo_path" "$local_path"
+            echo ">>> 成功保存至: $local_path"
+        fi
+        rm -rf "$tmp_dir"
+    fi
+}
+
+
+# --- 插件拉取列表 (全部存放至 package/diy) ---
+mkdir -p package/diy
+git clone https://github.com/tty228/luci-app-wechatpush.git package/luci-app-wechatpush
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall-luci
+git clone https://github.com/nikkinikki-org/OpenWrt-nikki.git package/OpenWrt-nikki
+# git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
+git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
+find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
+find ./ | grep Makefile | grep mosdns | xargs rm -f
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+git clone https://github.com/stackia/rtp2httpd package/rtp2httpd
+extract_pkg "https://github.com/timsaya/luci-app-bandix" "luci-app-bandix" "package/luci-app-bandix"
+extract_pkg "https://github.com/timsaya/openwrt-bandix" "openwrt-bandix" "package/openwrt-bandix"
