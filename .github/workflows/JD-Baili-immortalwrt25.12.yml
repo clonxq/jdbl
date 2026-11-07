@@ -36,6 +36,10 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  # honk-core 工具链版本（来自 honk_toolchain.sh 的输出，honk 更新后需同步）
+  HONK_ZIG_VERSION: 0.14.1
+  HONK_BPF_LINKER_VERSION: 0.11.0
+  HONK_BPF_LINKER_SHA256: 10f62ba9ab7e544d538370552660efcb4f1a19153d5752bbf0f6b51f3bada450
 
 jobs:
   build:
@@ -78,10 +82,56 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
-    - name: Install Zig
-      uses: goto-bus-stop/setup-zig@v2
+    # ===== honk-core 编译工具链：zig + rust(rustup) + bpf-linker =====
+    - name: 安装 Zig (honk)
+      uses: mlugg/setup-zig@v2
       with:
-        version: 0.13.0 # 根据 honk 或依赖所需的版本调整，通常最新或指定版本即可
+        version: ${{ env.HONK_ZIG_VERSION }}
+
+    - name: 缓存 Cargo 依赖 (honk)
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+        key: cargo-honk-${{ runner.os }}-${{ env.HONK_BPF_LINKER_VERSION }}
+        restore-keys: |
+          cargo-honk-${{ runner.os }}-
+
+    - name: 安装 Rust 与 bpf-linker (honk)
+      run: |
+        set -e
+        # ubuntu-24.04 runner 自带 rustup/cargo，没有则安装
+        if ! command -v rustup >/dev/null 2>&1; then
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+        fi
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        export PATH="$HOME/.cargo/bin:$PATH"
+
+        # 优先使用预编译包并校验 sha256；失败则回退到 cargo install（较慢）
+        mkdir -p "$HOME/.cargo/bin"
+        URL="https://github.com/aya-rs/bpf-linker/releases/download/v${HONK_BPF_LINKER_VERSION}/bpf-linker-x86_64-unknown-linux-gnu.tar.gz"
+        if curl -fL --retry 3 "$URL" -o /tmp/bpf-linker.tar.gz \
+           && echo "${HONK_BPF_LINKER_SHA256}  /tmp/bpf-linker.tar.gz" | sha256sum -c -; then
+          mkdir -p /tmp/bpf-linker
+          tar -xzf /tmp/bpf-linker.tar.gz -C /tmp/bpf-linker
+          install -m0755 "$(find /tmp/bpf-linker -type f -name bpf-linker | head -n 1)" "$HOME/.cargo/bin/bpf-linker"
+        else
+          echo "::warning::bpf-linker 预编译包下载/校验失败，回退到 cargo install"
+          rustup toolchain install nightly --profile minimal --component rust-src,llvm-tools
+          cargo +nightly install bpf-linker --version "${HONK_BPF_LINKER_VERSION}" --locked
+        fi
+
+    - name: 检查 honk 工具链
+      run: |
+        export PATH="$HOME/.cargo/bin:$PATH"
+        echo "zig: $(zig version)  (期望 ${HONK_ZIG_VERSION})"
+        [ "$(zig version)" = "${HONK_ZIG_VERSION}" ] || { echo "::error::zig 版本不匹配"; exit 1; }
+        cargo --version
+        rustup --version
+        command -v bpf-linker
+        bpf-linker --version || true
+    # ===== honk 工具链结束 =====
         
     - name: 下载固件源码
       working-directory: /workdir
@@ -140,6 +190,8 @@ jobs:
       id: compile
       run: |
         cd openwrt
+        # 确保 make 子进程能找到 zig / cargo / bpf-linker
+        export PATH="$HOME/.cargo/bin:$PATH"
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
