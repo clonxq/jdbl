@@ -77,6 +77,11 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
+
+    - name: Install Zig
+      uses: goto-bus-stop/setup-zig@v2
+      with:
+        version: 0.13.0 # 根据 honk 或依赖所需的版本调整，通常最新或指定版本即可
         
     - name: 下载固件源码
       working-directory: /workdir
