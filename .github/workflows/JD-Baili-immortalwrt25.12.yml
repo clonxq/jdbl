@@ -70,6 +70,7 @@ jobs:
         sudo -E apt -yqq autoclean
         sudo -E apt -yqq clean
         sudo -E apt -yqq install rename dos2unix python3-netifaces libfuse-dev llvm-dev libclang-dev clang
+        sudo -E apt -yqq install clang llvm libbpf-dev cmake libclang-dev zstd make perl file binutils git curl xz-utils pkg-config ca-certificates
         sudo bash -c 'bash <(curl -sL https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo rm -rf /etc/apt/sources.list.d/* /usr/local/lib/android /opt/ghc /usr/share/dotnet /usr/local/graalvm /usr/local/.ghcup \
         /usr/local/share/powershell /usr/local/share/chromium /usr/local/lib/node_modules
