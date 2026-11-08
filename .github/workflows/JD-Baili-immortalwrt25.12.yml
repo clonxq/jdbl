@@ -108,18 +108,31 @@ jobs:
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
         export PATH="$HOME/.cargo/bin:$PATH"
 
-        # 优先使用预编译包并校验 sha256；失败则回退到 cargo install（较慢）
+        # 官方 Linux 预编译包使用 *-unknown-linux-musl，格式可能是 .tar.zst 或 .tar.gz，
+        # 逐个尝试，只接受 sha256 与 honk 固定值一致的包
         mkdir -p "$HOME/.cargo/bin"
-        URL="https://github.com/aya-rs/bpf-linker/releases/download/v${HONK_BPF_LINKER_VERSION}/bpf-linker-x86_64-unknown-linux-gnu.tar.gz"
-        if curl -fL --retry 3 "$URL" -o /tmp/bpf-linker.tar.gz \
-           && echo "${HONK_BPF_LINKER_SHA256}  /tmp/bpf-linker.tar.gz" | sha256sum -c -; then
-          mkdir -p /tmp/bpf-linker
-          tar -xzf /tmp/bpf-linker.tar.gz -C /tmp/bpf-linker
-          install -m0755 "$(find /tmp/bpf-linker -type f -name bpf-linker | head -n 1)" "$HOME/.cargo/bin/bpf-linker"
-        else
-          echo "::warning::bpf-linker 预编译包下载/校验失败，回退到 cargo install"
-          rustup toolchain install nightly --profile minimal --component rust-src,llvm-tools
-          cargo +nightly install bpf-linker --version "${HONK_BPF_LINKER_VERSION}" --locked
+        BASE="https://github.com/aya-rs/bpf-linker/releases/download/v${HONK_BPF_LINKER_VERSION}"
+        OK=0
+        for EXT in tar.zst tar.gz; do
+          F="/tmp/bpf-linker.${EXT}"
+          if curl -fL --retry 3 "${BASE}/bpf-linker-x86_64-unknown-linux-musl.${EXT}" -o "$F"; then
+            echo "downloaded ${EXT}: $(sha256sum "$F" | cut -d' ' -f1)"
+            if echo "${HONK_BPF_LINKER_SHA256}  $F" | sha256sum -c -; then
+              mkdir -p /tmp/bpf-linker
+              tar -xpf "$F" -C /tmp/bpf-linker
+              install -m0755 "$(find /tmp/bpf-linker -type f -name bpf-linker | head -n 1)" "$HOME/.cargo/bin/bpf-linker"
+              OK=1
+              break
+            fi
+          fi
+        done
+
+        if [ "$OK" != 1 ]; then
+          # 兜底：cargo-binstall 取同版本预编译包（不带 sha 校验）。
+          # 不再用 cargo install：它需要匹配的 LLVM 共享库，在 runner 上会报 -lLLVM 找不到
+          echo "::warning::预编译包未能通过 sha256 校验，改用 cargo-binstall 安装 bpf-linker@${HONK_BPF_LINKER_VERSION}"
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          cargo binstall --no-confirm --locked "bpf-linker@${HONK_BPF_LINKER_VERSION}"
         fi
 
     - name: 检查 honk 工具链
