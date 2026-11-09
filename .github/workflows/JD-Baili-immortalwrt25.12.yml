@@ -19,7 +19,7 @@ on:
         required: false
         default: 'false'
 #  schedule:
-#    - cron: 25 18 2,15 * *
+#    - cron: 25 18 3,16 * *
 
 permissions: write-all
 
@@ -36,10 +36,6 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  # honk-core 工具链版本（来自 honk_toolchain.sh 的输出，honk 更新后需同步）
-  HONK_ZIG_VERSION: 0.14.1
-  HONK_BPF_LINKER_VERSION: 0.11.0
-  HONK_BPF_LINKER_SHA256: 10f62ba9ab7e544d538370552660efcb4f1a19153d5752bbf0f6b51f3bada450
 
 jobs:
   build:
@@ -74,77 +70,12 @@ jobs:
         sudo -E apt -yqq autoclean
         sudo -E apt -yqq clean
         sudo -E apt -yqq install rename dos2unix python3-netifaces libfuse-dev llvm-dev libclang-dev clang
-        sudo -E apt -yqq install clang llvm libbpf-dev cmake libclang-dev zstd make perl file binutils git curl xz-utils pkg-config ca-certificates
         sudo bash -c 'bash <(curl -sL https://build-scripts.immortalwrt.org/init_build_environment.sh)'
         sudo rm -rf /etc/apt/sources.list.d/* /usr/local/lib/android /opt/ghc /usr/share/dotnet /usr/local/graalvm /usr/local/.ghcup \
         /usr/local/share/powershell /usr/local/share/chromium /usr/local/lib/node_modules
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-
-    # ===== honk-core 编译工具链：zig + rust(rustup) + bpf-linker =====
-    - name: 安装 Zig (honk)
-      uses: mlugg/setup-zig@v2
-      with:
-        version: ${{ env.HONK_ZIG_VERSION }}
-
-    - name: 缓存 Cargo 依赖 (honk)
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/registry
-          ~/.cargo/git
-        key: cargo-honk-${{ runner.os }}-${{ env.HONK_BPF_LINKER_VERSION }}
-        restore-keys: |
-          cargo-honk-${{ runner.os }}-
-
-    - name: 安装 Rust 与 bpf-linker (honk)
-      run: |
-        set -e
-        # ubuntu-24.04 runner 自带 rustup/cargo，没有则安装
-        if ! command -v rustup >/dev/null 2>&1; then
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-        fi
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-        export PATH="$HOME/.cargo/bin:$PATH"
-
-        # 官方 Linux 预编译包使用 *-unknown-linux-musl，格式可能是 .tar.zst 或 .tar.gz，
-        # 逐个尝试，只接受 sha256 与 honk 固定值一致的包
-        mkdir -p "$HOME/.cargo/bin"
-        BASE="https://github.com/aya-rs/bpf-linker/releases/download/v${HONK_BPF_LINKER_VERSION}"
-        OK=0
-        for EXT in tar.zst tar.gz; do
-          F="/tmp/bpf-linker.${EXT}"
-          if curl -fL --retry 3 "${BASE}/bpf-linker-x86_64-unknown-linux-musl.${EXT}" -o "$F"; then
-            echo "downloaded ${EXT}: $(sha256sum "$F" | cut -d' ' -f1)"
-            if echo "${HONK_BPF_LINKER_SHA256}  $F" | sha256sum -c -; then
-              mkdir -p /tmp/bpf-linker
-              tar -xpf "$F" -C /tmp/bpf-linker
-              install -m0755 "$(find /tmp/bpf-linker -type f -name bpf-linker | head -n 1)" "$HOME/.cargo/bin/bpf-linker"
-              OK=1
-              break
-            fi
-          fi
-        done
-
-        if [ "$OK" != 1 ]; then
-          # 兜底：cargo-binstall 取同版本预编译包（不带 sha 校验）。
-          # 不再用 cargo install：它需要匹配的 LLVM 共享库，在 runner 上会报 -lLLVM 找不到
-          echo "::warning::预编译包未能通过 sha256 校验，改用 cargo-binstall 安装 bpf-linker@${HONK_BPF_LINKER_VERSION}"
-          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-          cargo binstall --no-confirm --locked "bpf-linker@${HONK_BPF_LINKER_VERSION}"
-        fi
-
-    - name: 检查 honk 工具链
-      run: |
-        export PATH="$HOME/.cargo/bin:$PATH"
-        echo "zig: $(zig version)  (期望 ${HONK_ZIG_VERSION})"
-        [ "$(zig version)" = "${HONK_ZIG_VERSION}" ] || { echo "::error::zig 版本不匹配"; exit 1; }
-        cargo --version
-        rustup --version
-        command -v bpf-linker
-        bpf-linker --version || true
-    # ===== honk 工具链结束 =====
         
     - name: 下载固件源码
       working-directory: /workdir
@@ -203,8 +134,6 @@ jobs:
       id: compile
       run: |
         cd openwrt
-        # 确保 make 子进程能找到 zig / cargo / bpf-linker
-        export PATH="$HOME/.cargo/bin:$PATH"
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
