@@ -21,15 +21,13 @@ rm -rf feeds/luci/applications/luci-app-wrtbwmon
 rm -rf feeds/luci/applications/luci-app-wechatpush
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf feeds/luci/applications/luci-app-ssr-plus
+rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/packages/net/wrtbwmon
 rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/packages/net/mosdns
 rm -rf ./feeds/packages/net/shadowsocks-libev
 rm -rf ./feeds/packages/net/shadowsocks-rust
 rm -rf ./feeds/packages/net/shadowsocksr-libev
-rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
-rm -rf feeds/luci/applications/luci-app-passwall
-
 
 # 特殊包处理 (Golang 强制替换)
 rm -rf feeds/packages/lang/golang
