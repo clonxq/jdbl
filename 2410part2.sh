@@ -27,7 +27,7 @@ rm -rf feeds/packages/net/mosdns
 rm -rf ./feeds/packages/net/shadowsocks-libev
 rm -rf ./feeds/packages/net/shadowsocks-rust
 rm -rf ./feeds/packages/net/shadowsocksr-libev
-rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
 rm -rf feeds/luci/applications/luci-app-passwall
 
 
